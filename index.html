@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Psi Lutalice u Zenici</title>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family: 'Segoe UI', sans-serif;}
+body{background:linear-gradient(135deg,#d8f3dc,#b7e4c7,#95d5b2);background-attachment:fixed;color:#333;}
+nav{background:#1b4332;padding:15px;position:sticky;top:0;z-index:10;}
+nav ul{display:flex;justify-content:center;gap:35px;list-style:none;}
+nav a{color:white;text-decoration:none;font-weight:bold;font-size:17px;}
+nav a:hover{color:#95d5b2;}
+.hero{height:65vh;background:linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url("https://www.glavne.com/content/images/size/w1384/2021/05/psi-lutalice-neodgovorni-vlasnici.jpg");background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;text-align:center;color:white;padding:20px;}
+.hero h1{font-size:3.5rem;margin-bottom:15px;}
+.hero p{font-size:1.3rem;}
+section{padding:70px 10%;background:rgba(255,255,255,0.65);backdrop-filter:blur(6px);border-radius:20px;margin:40px 5%;}
+section h2{text-align:center;margin-bottom:40px;font-size:2.2rem;color:#1b4332;}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:30px;}
+.card{background:linear-gradient(135deg,#ffffff,#f1faee);padding:25px;border-radius:14px;box-shadow:0 6px 20px rgba(0,0,0,0.1);transition:0.3s;}
+.card:hover{transform:translateY(-8px);}
+.card h3{color:#2d6a4f;margin-bottom:10px;}
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;}
+.gallery img{width:100%;border-radius:12px;height:200px;object-fit:cover;transition:0.3s;}
+.gallery img:hover{transform:scale(1.05);}
+#map{height:450px;border-radius:12px;margin-top:30px;box-shadow:0 6px 20px rgba(0,0,0,0.2);}
+.stats{display:flex;flex-wrap:wrap;justify-content:center;gap:30px;margin-top:30px;}
+.stat{background:white;padding:25px;border-radius:12px;width:200px;text-align:center;box-shadow:0 6px 20px rgba(0,0,0,0.1);}
+.stat h3{color:#2d6a4f;font-size:2rem;}
+#dogChart{max-width:900px;margin:auto;}
+.report-form{max-width:600px;margin:auto;display:flex;flex-direction:column;gap:15px;margin-top:30px;}
+.report-form input,.report-form textarea{padding:12px;border-radius:8px;border:1px solid #ccc;font-size:15px;}
+.report-form button{padding:12px;background:#2d6a4f;color:white;border:none;border-radius:8px;font-size:16px;cursor:pointer;}
+.report-form button:hover{background:#1b4332;}
+footer{background:#1b4332;color:white;text-align:center;padding:25px;margin-top:40px;}
+</style>
+</head>
+
+<body>
+
+<nav>
+<ul>
+<li><a href="#problem">Problem</a></li>
+<li><a href="#napadi">Napadi</a></li>
+<li><a href="#mapa">Mapa</a></li>
+<li><a href="#rjesenja">Rješenja</a></li>
+</ul>
+</nav>
+
+<div class="hero">
+<div>
+<h1>Psi Lutalice u Zenici</h1>
+<p>Jedan od najvećih urbanih problema u gradu</p>
+</div>
+</div>
+
+<section id="problem">
+<h2>Problem pasa lutalica</h2>
+<div class="cards">
+<div class="card"><h3>Sigurnost građana</h3><p>Građani Zenice često prijavljuju čopore pasa u naseljima, parkovima i blizu škola. Poseban problem predstavljaju psi koji postaju agresivni kada brane teritoriju ili traže hranu.</p></div>
+<div class="card"><h3>Dobrobit životinja</h3><p>Mnogi psi lutalice su bolesni, gladni ili povrijeđeni. Bez skloništa i veterinarske pomoći njihov život na ulici je veoma težak.</p></div>
+<div class="card"><h3>Uticaj na grad</h3><p>Veliki broj pasa na ulicama utiče na osjećaj sigurnosti građana, turizam i kvalitet života u gradu.</p></div>
+</div>
+<div class="stats">
+<div class="stat"><h3>100+</h3><p>Prijavljenih ugriza pasa</p></div>
+<div class="stat"><h3>20+</h3><p>Pasa u nekim čoporima</p></div>
+<div class="stat"><h3>Stotine</h3><p>Pasa na ulicama</p></div>
+</div>
+</section>
+
+<section id="napadi">
+<h2>Zabilježeni napadi</h2>
+<div class="cards">
+<div class="card"><h3>Napadi na građane</h3><p>U Zenici je tokom više godina zabilježen veliki broj ugriza pasa. Najčešće se incidenti dešavaju u naseljima gdje se psi okupljaju oko kontejnera ili napuštenih objekata.</p></div>
+<div class="card"><h3>Napadi na djecu</h3><p>Roditelji često izražavaju zabrinutost zbog prisustva pasa lutalica blizu škola i igrališta. Djeca su posebno ranjiva jer ih psi mogu doživjeti kao prijetnju.</p></div>
+<div class="card"><h3>Napadi na domaće životinje</h3><p>U nekim slučajevima čopori pasa napadali su i domaće životinje u prigradskim dijelovima grada.</p></div>
+</div>
+</section>
+
+<section>
+<h2>Fotografije pasa lutalica</h2>
+<div class="gallery">
+<img src="https://media.federalna.ba/storage/portal-hd00-02-17-18still5915-1762797545.jpg">
+<img src="https://avaz.ba/media/2016/07/20/110677/578f71ce-e7cc-48e2-8003-56e30a0a0a64-lutalice-ze1.jpg">
+<img src="https://avaz.ba/media/2018/02/26/523157/zenica-psi-55.jpg">
+<img src="https://www.vijesti.me/data/images/2025/06/21/20/5654530_2410217_ls.jpg">
+</div>
+</section>
+
+<section id="mapa">
+<h2>Interaktivna mapa problema</h2>
+<p style="text-align:center;max-width:800px;margin:auto;">Kliknite na označene tačke na mapi kako biste vidjeli mjesta gdje građani često prijavljuju probleme sa psima lutalicama.</p>
+<div id="map"></div>
+</section>
+
+<section>
+<h2>Rast broja pasa lutalica kroz godine</h2>
+<canvas id="dogChart"></canvas>
+</section>
+
+<section>
+<h2>Prijavi psa lutalicu</h2>
+<form class="report-form" id="dogForm">
+<input type="text" id="lokacija" placeholder="Lokacija gdje ste vidjeli psa" required>
+<textarea id="opis" placeholder="Opis situacije (čopor pasa, agresivan pas, povrijeđen pas...)"></textarea>
+<button type="submit">Pošalji prijavu</button>
+</form>
+</section>
+
+<section id="rjesenja">
+<h2>Moguća rješenja</h2>
+<div class="cards">
+<div class="card"><h3>Sterilizacija</h3><p>Program sterilizacije smanjuje nekontrolisano razmnožavanje pasa.</p></div>
+<div class="card"><h3>Azili za pse</h3><p>Gradovi trebaju ulagati u skloništa gdje psi mogu dobiti hranu i veterinarsku pomoć.</p></div>
+<div class="card"><h3>Edukacija građana</h3><p>Važno je podizati svijest o odgovornom vlasništvu i zabrani napuštanja životinja.</p></div>
+<div class="card"><h3>Udomljavanje</h3><p>Udomljavanje pasa iz azila može značajno smanjiti broj životinja na ulicama.</p></div>
+</div>
+</section>
+
+<footer>
+<p>Projekt o problemu pasa lutalica u Zenici | 2026</p>
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+<script>
+emailjs.init("YOUR_USER_ID_HERE"); // <-- zamijeni sa tvojim EmailJS userID
+
+var map = L.map('map').setView([44.2034, 17.9077], 13);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'Map data © OpenStreetMap'}).addTo(map);
+L.marker([44.201,17.905]).addTo(map).bindPopup("Prijavljeni čopori pasa u ovom dijelu grada.");
+L.marker([44.207,17.910]).addTo(map).bindPopup("Građani su prijavili više ugriza pasa.");
+L.marker([44.198,17.915]).addTo(map).bindPopup("Često okupljanje pasa lutalica.");
+
+// Grafikon
+const ctx=document.getElementById('dogChart');
+new Chart(ctx,{type:'line',data:{labels:['2018','2019','2020','2021','2022','2023','2024'],datasets:[{label:'Procijenjen broj pasa lutalica',data:[150,180,210,260,320,380,420],borderColor:'#2d6a4f',backgroundColor:'rgba(45,106,79,0.2)',borderWidth:3,tension:0.4,fill:true}]},options:{responsive:true}});
+
+// Funkcija za formu
+document.getElementById("dogForm").addEventListener("submit",function(e){
+    e.preventDefault();
+    let lokacija=document.getElementById("lokacija").value;
+    let opis=document.getElementById("opis").value;
+    // Dodavanje markera
+    let lat=44.2034+(Math.random()-0.5)*0.02;
+    let lng=17.9077+(Math.random()-0.5)*0.02;
+    L.marker([lat,lng]).addTo(map).bindPopup("<b>Nova prijava</b><br>"+lokacija+"<br>"+opis);
+    alert("Prijava je dodana na mapu i poslana službi.");
+
+    // Slanje emaila putem EmailJS
+    emailjs.send("YOUR_SERVICE_ID_HERE","YOUR_TEMPLATE_ID_HERE",{
+        lokacija: lokacija,
+        opis: opis,
+        grad: "Zenica",
+        sluzba: "Služba za komunalne poslove"
+    }).then(function(response){
+        console.log("Email poslan!", response.status, response.text);
+    }, function(error){
+        console.error("Greška pri slanju emaila:", error);
+    });
+
+    document.getElementById("dogForm").reset();
+});
+</script>
+
+</body>
+</html>
